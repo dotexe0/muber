@@ -5,7 +5,7 @@ const  { Schema } = mongoose
 const DriverSchema = new Schema({
   email: { type: String, required: true },
   driving: { type: Boolean, default: false },
-  // location: { type: }
+  // location: { type: } // unknown at this time how to best define
 })
 
 const Driver = mongoose.model('driver', DriverSchema)
