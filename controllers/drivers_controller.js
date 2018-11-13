@@ -4,6 +4,20 @@ const Driver = require('../models/driver')
   greeting(req, res) {
     res.send({ hi: 'there' })
   },
+  index(req, res, next) {
+    const { lng, lat } = req.query
+    Driver.aggregate([
+      { $geoNear: {
+          near: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
+          spherical: true, 
+          maxDistance: 200000,  // in meters (200km) 
+          distanceField: 'dist'
+        }
+      }
+    ])
+      .then(drivers => res.send(drivers))
+      .catch(next)
+  },
   create(req, res, next) {
     const driverProps = req.body
     Driver.create(driverProps)
