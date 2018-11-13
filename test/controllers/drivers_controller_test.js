@@ -21,6 +21,37 @@ describe('Drivers controller', () => {
           })
       })  
     })
-    
+  })
+  it('PUT to /api/drivers/:if to update a driver', done => {
+    const driver = new Driver({ email: 't@t.com', driving: false })
+    driver.save()
+      .then(() => {
+        request(app)
+          .put(`/api/drivers/${driver._id}`)
+          .send({ driving: true })
+          .end((err, res) => {
+            Driver.findOne({ email: 't@t.com' })
+              .then(driver => {
+                assert(driver.driving === true)
+                done()
+              })
+          })
+      })
+  })
+
+  it('DELETE to /api/drivers/:if to delete a driver', done => {
+    const driver = new Driver({ email: 't@t.com', driving: false })
+    driver.save()
+      .then(() => {
+        request(app)
+        .delete(`/api/drivers/${driver._id}`)
+        .end((err, res) => {
+          Driver.findOne({ email: 't@t.com' })
+          .then(driver => {
+            assert(driver === null)
+            done()
+          })
+        })
+      })
   })
 })
