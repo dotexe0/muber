@@ -8,3 +8,10 @@ before(done => {
       console.warn('Warning:::', error)
     })
 })
+
+beforeEach(done => {
+  const { drivers } = mongoose.connection.collections
+  drivers.drop()
+    .then(() => done())
+    .catch(() => done())
+})
